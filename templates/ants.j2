@@ -1,0 +1,46 @@
+#!/usr/bin/python
+
+import urllib2
+import os
+import plistlib
+import errno
+import subprocess
+from Foundation import CFPreferencesCopyAppValue
+
+
+def call_ants(command):
+	cmd = ['{{ munki_condition__ants_path }}', command]
+	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+	out, err = p.communicate()
+	return out
+
+def main():
+
+    # Read the location of the ManagedInstallDir from ManagedInstall.plist
+    BUNDLE_ID = 'ManagedInstalls'
+    pref_name = 'ManagedInstallDir'
+    managedinstalldir = CFPreferencesCopyAppValue(pref_name, BUNDLE_ID)
+    # Make sure we're outputting our information to "ConditionalItems.plist"
+    conditionalitemspath = os.path.join(managedinstalldir, 'ConditionalItems.plist')
+
+    results_dict = {}
+
+    results_dict['ants_status'] = call_ants('-s')
+    results_dict['ants_policy_version'] = call_ants('-p')
+    results_dict['ants_active_branch'] = call_ants('-a')
+
+    if os.path.exists(conditionalitemspath):
+        # "ConditionalItems.plist" exists, so read it FIRST (existing_dict)
+        existing_dict = plistlib.readPlist(conditionalitemspath)
+        # Create output_dict which joins new data generated in this script with existing data
+        output_dict = dict(existing_dict.items() + results_dict.items())
+    else:
+        # "ConditionalItems.plist" does not exist,
+        # output only consists of data generated in this script
+        output_dict = results_dict
+
+    # Write out data to "ConditionalItems.plist"
+    plistlib.writePlist(output_dict, conditionalitemspath)
+
+if __name__ == '__main__':
+    main()

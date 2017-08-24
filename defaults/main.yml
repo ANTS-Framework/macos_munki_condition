@@ -1,0 +1,8 @@
+---
+
+munki_condition__dir: "/usr/local/munki/conditions"
+munki_condition__templates:
+ - "on_corp"
+ - "ants"
+munki_condition__on_corp_target: "http://mcs-oncorp.its.unibas.ch/oncorp.plist"
+munki_condition__ants_path: "/usr/local/ants/ants.py"

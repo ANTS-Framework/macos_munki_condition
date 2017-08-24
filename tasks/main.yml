@@ -1,0 +1,18 @@
+---
+
+- name: Make sure directory exists
+  file:
+    path: "{{  munki_condition__dir }}"
+    owner: root
+    group: wheel
+    state: directory
+
+- name: Create munki conditions from template
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ munki_condition__dir }}/{{ item }}"
+    owner: root
+    group: wheel
+    mode: 0755
+  with_items:
+        - "{{ munki_condition__templates }}"
