@@ -1,8 +1,13 @@
 ---
 
+# Install the templates to this directory
 munki_condition__dir: "/usr/local/munki/conditions"
+# List of templates to installed
 munki_condition__templates:
  - "on_corp"
  - "ants"
+# Url for on_corp conditon
+# See https://github.com/grahamgilbert/munki_conditions/tree/master/on_corp
 munki_condition__on_corp_target: "http://mcs-oncorp.its.unibas.ch/oncorp.plist"
+# Path to ants executable
 munki_condition__ants_path: "/usr/local/ants/ants.py"
