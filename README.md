@@ -1,6 +1,8 @@
 macos munki condition
 =====================
 
+[![Build Status](https://travis-ci.org/ANTS-Framework/macos_munki_condition.svg?branch=master)](https://travis-ci.org/ANTS-Framework/macos_munki_condition)
+
 This role is used to manage the admin provided conditions for munki.
 For more details about munki conditional items see
 [the munki wiki](https://github.com/munki/munki/wiki/Conditional-Items#admin-provided-conditions)
