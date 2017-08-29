@@ -25,7 +25,7 @@ munki_condition__templates:
  - "ants"
 # Url for on_corp conditon
 # See https://github.com/grahamgilbert/munki_conditions/tree/master/on_corp
-munki_condition__on_corp_target: "http://mcs-oncorp.its.unibas.ch/oncorp.plist"
+munki_condition__on_corp_target: "http:/oncorp.pretencdorp.com//oncorp.plist"
 # Path to ants executable
 munki_condition__ants_path: "/usr/local/ants/ants.py"
 ```
@@ -34,6 +34,8 @@ Example Playbook
 ----------------
 ```yml
 - hosts: clients
+  vars:
+    - munki_condition__on_corp_target: "myurl.io"
   roles:
   - role: macos_munki_conditions
 ```
