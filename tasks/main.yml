@@ -16,3 +16,5 @@
     mode: 0755
   with_items:
         - "{{ munki_condition__templates }}"
+  notify:
+  - Munki run manual check

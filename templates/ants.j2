@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+  
 import urllib2
 import os
 import plistlib
@@ -8,11 +8,20 @@ import subprocess
 from Foundation import CFPreferencesCopyAppValue
 
 
+def find_ants_exe():
+    paths = {{ munki_condition__ants_path }}
+    for p in paths:
+        if os.path.isfile(p):
+            return p
+
+
 def call_ants(command):
-	cmd = ['{{ munki_condition__ants_path }}', command]
-	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-	out, err = p.communicate()
-	return out
+    ants_exe = find_ants_exe()
+    cmd = [ants_exe, command]
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    out, err = p.communicate()
+    return out
+
 
 def main():
 
@@ -21,7 +30,8 @@ def main():
     pref_name = 'ManagedInstallDir'
     managedinstalldir = CFPreferencesCopyAppValue(pref_name, BUNDLE_ID)
     # Make sure we're outputting our information to "ConditionalItems.plist"
-    conditionalitemspath = os.path.join(managedinstalldir, 'ConditionalItems.plist')
+    conditionalitemspath = os.path.join(
+        managedinstalldir, 'ConditionalItems.plist')
 
     results_dict = {}
 
@@ -41,6 +51,7 @@ def main():
 
     # Write out data to "ConditionalItems.plist"
     plistlib.writePlist(output_dict, conditionalitemspath)
+
 
 if __name__ == '__main__':
     main()

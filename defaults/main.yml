@@ -6,8 +6,12 @@ munki_condition__dir: "/usr/local/munki/conditions"
 munki_condition__templates:
  - "on_corp"
  - "ants"
+ - "check_sierra"
+ - "check_high_sierra"
 # Url for on_corp conditon
 # See https://github.com/grahamgilbert/munki_conditions/tree/master/on_corp
 munki_condition__on_corp_target: "http:/oncorp.pretencdorp.com//oncorp.plist"
 # Path to ants executable
-munki_condition__ants_path: "/usr/local/ants/ants.py"
+munki_condition__ants_path:
+ - "/Library/ANTS-Framework/bin/ants"
+ - "/usr/local/bin/ants"
