@@ -4,16 +4,30 @@ sudo: required
 env:
     - ANSIBLE_VERSION: "2.4.3.0"
 
-install:
+before_install:
   - sudo apt update -qq
+  - sudo chmod 0777 /usr/local/
+
+install:
+  # Install Ansible.
+  - pip install ansible
+
+  # Add ansible.cfg to pick up roles path.
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+
+  # Check if ansible cfg was created correctly
+  - cat ansible.cfg
 
 script:
-# Download test shim.
-- wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/geerlingguy/73ef1e5ee45d8694570f334be385e181/raw/
-- chmod +x ${PWD}/tests/test.sh
-
-# Run tests.
-- ${PWD}/tests/test.sh
+  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+  # Run the role/playbook with ansible-playbook.
+  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --user=root"
+  # Run the role/playbook again, checking to make sure it's idempotent.
+  - >
+    ansible-playbook -i tests/inventory tests/test.yml --connection=local --user=root
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
 
 notifications:
     # Always send email notification
