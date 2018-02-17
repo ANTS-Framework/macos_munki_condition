@@ -52,7 +52,7 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
             ;;
     esac
     pyenv rehash
-    easy_install pieasy_install pipp
+    sudo easy_install pip
     python -m pip install --user virtualenv
 else
     # download, compile, and install if it's not already present via travis
