@@ -6,6 +6,7 @@ env:
 
 before_install:
   - sudo apt update -qq
+  - "echo 'auth required pam_wheel.so' | sudo tee --append /etc/pam.d/su"
   #- sudo su
   #- sudo chmod 0777 /usr/local/
   
@@ -18,7 +19,7 @@ install:
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } | tee --append ansible.cfg"
 
   # Check if ansible cfg was created correctly
-  - cat ansible.cfg
+  - cat ansible.cfg 
 
 script:
   - ansible-playbook -i tests/inventory tests/test.yml --syntax-check --sudo
