@@ -1,3 +1,4 @@
+os: osx
 language: python
 sudo: required
 
@@ -5,8 +6,8 @@ env:
     - ANSIBLE_VERSION: "2.4.3.0"
 
 before_install:
-  - sudo apt update -qq
-  - "echo 'auth required pam_wheel.so' | sudo tee --append /etc/pam.d/su"
+  #- sudo apt update -qq
+  #- "echo 'auth required pam_wheel.so' | sudo tee --append /etc/pam.d/su"
   #- sudo su
   #- sudo chmod 0777 /usr/local/
   
