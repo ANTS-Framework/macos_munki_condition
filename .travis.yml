@@ -12,21 +12,21 @@ before_install:
 
 install:
   # Install Ansible.
-  - sudo pip install ansible
+  - pip install ansible
 
   # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } | sudo tee --append ansible.cfg"
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } | tee --append ansible.cfg"
 
   # Check if ansible cfg was created correctly
-  - sudo cat ansible.cfg
+  - cat ansible.cfg
 
 script:
-  - sudo ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check --sudo
   # Run the role/playbook with ansible-playbook.
-  - sudo ansible-playbook -i tests/inventory tests/test.yml --connection=local
+  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    sudo ansible-playbook -i tests/inventory tests/test.yml --connection=local
+    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
