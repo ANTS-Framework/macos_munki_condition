@@ -23,12 +23,12 @@ install:
   - cat ansible.cfg 
 
 script:
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check --sudo
+  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+  - ansible-playbook -i tests/inventory tests/test.yml --connection=local
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+    ansible-playbook -i tests/inventory tests/test.yml --connection=local
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
@@ -45,7 +45,7 @@ notifications:
     webhooks:
         urls:
             - https://galaxy.ansible.com/api/v1/notifications/
-        on_success: never
+        on_success: always
         on_failure: never
         on_start: never
         on_cancel: never
