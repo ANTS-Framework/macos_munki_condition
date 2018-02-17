@@ -1,5 +1,5 @@
 os: osx
-language: python
+#language: python
 sudo: required
 
 env:
@@ -10,7 +10,7 @@ before_install:
   #- "echo 'auth required pam_wheel.so' | sudo tee --append /etc/pam.d/su"
   #- sudo su
   #- sudo chmod 0777 /usr/local/
-  
+  - ./tests/installPython.sh
 
 install:
   # Install Ansible.
