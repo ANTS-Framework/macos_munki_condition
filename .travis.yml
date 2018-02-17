@@ -6,8 +6,9 @@ env:
 
 before_install:
   - sudo apt update -qq
-  - sudo chmod 0777 /usr/local/
-  - sudo chown -R a+rwX /usr/local/
+  - sudo su
+  #- sudo chmod 0777 /usr/local/
+  
 
 install:
   # Install Ansible.
