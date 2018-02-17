@@ -6,27 +6,27 @@ env:
 
 before_install:
   - sudo apt update -qq
-  - sudo su
+  #- sudo su
   #- sudo chmod 0777 /usr/local/
   
 
 install:
   # Install Ansible.
-  - pip install ansible
+  - sudo pip install ansible
 
   # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  - sudo "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 
   # Check if ansible cfg was created correctly
-  - cat ansible.cfg
+  - sudo cat ansible.cfg
 
 script:
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+  - sudo ansible-playbook -i tests/inventory tests/test.yml --syntax-check
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --user=root"
+  - sudo "ansible-playbook -i tests/inventory tests/test.yml --connection=local"
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local --user=root
+    sudo ansible-playbook -i tests/inventory tests/test.yml --connection=local
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
@@ -43,7 +43,7 @@ notifications:
     webhooks:
         urls:
             - https://galaxy.ansible.com/api/v1/notifications/
-        on_success: always
+        on_success: never
         on_failure: never
         on_start: never
         on_cancel: never
